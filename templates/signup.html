@@ -21,149 +21,184 @@
         }
 
         .signup-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
         }
 
         .signup-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .signup-header h2 {
             color: #333;
             margin-bottom: 0.5rem;
-            font-size: 2rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .signup-header p {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             color: #333;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1rem;
         }
 
         .form-group input[type="text"],
         .form-group input[type="password"] {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
         }
 
         .form-group input[type="text"]:focus,
         .form-group input[type="password"]:focus {
             outline: none;
             border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .user-type-selection {
             display: flex;
-            margin-bottom: 1.5rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            margin-bottom: 2rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
             overflow: hidden;
+            background: #f8f9fa;
         }
 
         .user-type-option {
             flex: 1;
-            padding: 0.75rem;
+            padding: 1rem;
             text-align: center;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             color: #333;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
+            font-weight: 600;
         }
 
         .user-type-option.active {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+        }
+
+        .user-type-option:hover:not(.active) {
+            background: linear-gradient(135deg, #e7f3ff, #d1ecf1);
         }
 
         .signup-btn {
             width: 100%;
-            padding: 0.75rem;
+            padding: 1.2rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
         }
 
         .signup-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
 
         .signup-footer {
             text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
             border-top: 1px solid #eee;
         }
 
         .signup-footer a {
             color: #667eea;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .signup-footer a:hover {
             text-decoration: underline;
+            color: #5a67d8;
         }
 
         .alert {
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border-radius: 5px;
-            font-size: 0.9rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            border-left: 4px solid;
         }
 
         .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: #fef2f2;
+            color: #991b1b;
+            border-left-color: #dc2626;
         }
 
         .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #f0fdf4;
+            color: #166534;
+            border-left-color: #16a34a;
         }
 
         .password-strength {
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 5px;
         }
 
         .strength-weak {
-            color: #dc3545;
+            color: #dc2626;
+            background: #fef2f2;
         }
 
         .strength-medium {
-            color: #ffc107;
+            color: #d97706;
+            background: #fffbeb;
         }
 
         .strength-strong {
-            color: #28a745;
+            color: #059669;
+            background: #ecfdf5;
+        }
+
+        body {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>

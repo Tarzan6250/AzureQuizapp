@@ -151,6 +151,85 @@
             margin-bottom: 0.5rem;
         }
 
+        .correct-answer-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .correct-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .correct-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .correct-option input[type="radio"] {
+            display: none;
+        }
+
+        .correct-option input[type="radio"]:checked + .option-label {
+            background: #667eea;
+            color: white;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .option-letter {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .option-preview {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .correct-option:hover .option-letter {
+            background: #5a67d8;
+        }
+
+        /* Animation for selection */
+        @keyframes selectPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .correct-option:has(input[type="radio"]:checked) {
+            animation: selectPulse 0.3s ease-in-out;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
         .instructions p {
             color: #666;
             line-height: 1.5;
@@ -212,16 +291,77 @@
             </div>
 
             <div class="form-group">
-                <label for="correct">Correct Answer</label>
-                <input type="text" id="correct" name="correct" placeholder="Enter A, B, C, or D" maxlength="1" style="text-transform: uppercase;" required>
+                <label>Correct Answer</label>
+                <div class="correct-answer-selection">
+                    <div class="correct-option">
+                        <input type="radio" id="correct_a" name="correct" value="A" required>
+                        <label for="correct_a" class="option-label">
+                            <span class="option-letter">A</span>
+                            <span class="option-preview" id="preview_a">{{ request.form.a if request.form.a else 'Option A' }}</span>
+                        </label>
+                    </div>
+                    <div class="correct-option">
+                        <input type="radio" id="correct_b" name="correct" value="B">
+                        <label for="correct_b" class="option-label">
+                            <span class="option-letter">B</span>
+                            <span class="option-preview" id="preview_b">{{ request.form.b if request.form.b else 'Option B' }}</span>
+                        </label>
+                    </div>
+                    <div class="correct-option">
+                        <input type="radio" id="correct_c" name="correct" value="C">
+                        <label for="correct_c" class="option-label">
+                            <span class="option-letter">C</span>
+                            <span class="option-preview" id="preview_c">{{ request.form.c if request.form.c else 'Option C' }}</span>
+                        </label>
+                    </div>
+                    <div class="correct-option">
+                        <input type="radio" id="correct_d" name="correct" value="D">
+                        <label for="correct_d" class="option-label">
+                            <span class="option-letter">D</span>
+                            <span class="option-preview" id="preview_d">{{ request.form.d if request.form.d else 'Option D' }}</span>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="submit-btn">Save Question</button>
         </form>
 
-        <div style="text-align: center; margin-top: 2rem; color: #666;">
-            <a href="{{ url_for('auth.logout') }}" style="color: #dc3545; text-decoration: none;">Logout</a>
-        </div>
-    </div>
+    <script>
+        function selectUserType(type) {
+            // Remove active class from both options
+            document.getElementById('teacher-option').classList.remove('active');
+            document.getElementById('student-option').classList.remove('active');
+
+            // Add active class to selected option
+            document.getElementById(type + '-option').classList.add('active');
+
+            // Set the hidden input value
+            document.getElementById('user_type').value = type;
+        }
+
+        // Set default selection and setup previews
+        document.addEventListener('DOMContentLoaded', function() {
+            selectUserType('teacher');
+            setupOptionPreviews();
+        });
+
+        function setupOptionPreviews() {
+            // Update preview text when options are typed
+            ['a', 'b', 'c', 'd'].forEach(option => {
+                const input = document.getElementById('option_' + option);
+                const preview = document.getElementById('preview_' + option);
+
+                if (input && preview) {
+                    input.addEventListener('input', function() {
+                        preview.textContent = this.value || `Option ${option.toUpperCase()}`;
+                    });
+
+                    // Initial update
+                    preview.textContent = input.value || `Option ${option.toUpperCase()}`;
+                }
+            });
+        }
+    </script>
 </body>
 </html>

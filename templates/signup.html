@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Digital Classroom Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .signup-header h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .signup-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .user-type-selection {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .user-type-option {
+            flex: 1;
+            padding: 0.75rem;
+            text-align: center;
+            background: #f8f9fa;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .user-type-option.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .signup-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .signup-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .strength-weak {
+            color: #dc3545;
+        }
+
+        .strength-medium {
+            color: #ffc107;
+        }
+
+        .strength-strong {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <h2>Create Account</h2>
+            <p>Join our digital classroom</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'error' if category == 'error' else 'success' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" onkeyup="checkPasswordStrength()" required>
+                <div id="password-strength" class="password-strength"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" onkeyup="checkPasswordMatch()" required>
+                <div id="password-match" class="password-strength"></div>
+            </div>
+
+            <div class="form-group">
+                <label>I am a:</label>
+                <div class="user-type-selection">
+                    <div class="user-type-option" onclick="selectUserType('teacher')" id="teacher-option">Teacher</div>
+                    <div class="user-type-option" onclick="selectUserType('student')" id="student-option">Student</div>
+                </div>
+                <input type="hidden" name="user_type" id="user_type" required>
+            </div>
+
+            <button type="submit" class="signup-btn">Create Account</button>
+        </form>
+
+        <div class="signup-footer">
+            <p>Already have an account? <a href="{{ url_for('auth.login') }}">Sign in here</a></p>
+        </div>
+    </div>
+
+    <script>
+        function selectUserType(type) {
+            // Remove active class from both options
+            document.getElementById('teacher-option').classList.remove('active');
+            document.getElementById('student-option').classList.remove('active');
+
+            // Add active class to selected option
+            document.getElementById(type + '-option').classList.add('active');
+
+            // Set the hidden input value
+            document.getElementById('user_type').value = type;
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthIndicator = document.getElementById('password-strength');
+
+            if (password.length < 6) {
+                strengthIndicator.textContent = 'Password too short';
+                strengthIndicator.className = 'password-strength strength-weak';
+            } else if (password.length < 8) {
+                strengthIndicator.textContent = 'Weak password';
+                strengthIndicator.className = 'password-strength strength-weak';
+            } else if (password.length < 10) {
+                strengthIndicator.textContent = 'Medium strength password';
+                strengthIndicator.className = 'password-strength strength-medium';
+            } else {
+                strengthIndicator.textContent = 'Strong password';
+                strengthIndicator.className = 'password-strength strength-strong';
+            }
+        }
+
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            const matchIndicator = document.getElementById('password-match');
+
+            if (confirmPassword === '') {
+                matchIndicator.textContent = '';
+                return;
+            }
+
+            if (password === confirmPassword) {
+                matchIndicator.textContent = 'Passwords match ✓';
+                matchIndicator.className = 'password-strength strength-strong';
+            } else {
+                matchIndicator.textContent = 'Passwords do not match ✗';
+                matchIndicator.className = 'password-strength strength-weak';
+            }
+        }
+
+        // Set default selection
+        document.addEventListener('DOMContentLoaded', function() {
+            selectUserType('teacher');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+Flask
+Flask-PyMongo
+flask-login
+python-dotenv
+werkzeug
+bson

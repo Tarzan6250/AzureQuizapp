@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results - Digital Classroom Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 3px solid;
+        }
+
+        .result-card.excellent {
+            border-color: #28a745;
+        }
+
+        .result-card.good {
+            border-color: #ffc107;
+        }
+
+        .result-card.average {
+            border-color: #fd7e14;
+        }
+
+        .result-card.poor {
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .score-display.excellent {
+            color: #28a745;
+        }
+
+        .score-display.good {
+            color: #ffc107;
+        }
+
+        .score-display.average {
+            color: #fd7e14;
+        }
+
+        .score-display.poor {
+            color: #dc3545;
+        }
+
+        .percentage {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-message.excellent {
+            color: #28a745;
+        }
+
+        .result-message.good {
+            color: #ffc107;
+        }
+
+        .result-message.average {
+            color: #fd7e14;
+        }
+
+        .result-message.poor {
+            color: #dc3545;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #eee;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        .user-info {
+            background: #e7f3ff;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .user-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        .footer a {
+            color: #dc3545;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Quiz Results</h1>
+            <p>Your performance summary</p>
+        </div>
+
+        <div class="user-info">
+            <p><strong>Student:</strong> {{ session.username }}</p>
+            <p><strong>Completed:</strong> {{ now.strftime('%B %d, %Y at %I:%M %p') }}</p>
+        </div>
+
+        {% set percentage = (score / total * 100) | int %}
+        {% if percentage >= 90 %}
+            {% set result_class = 'excellent' %}
+            {% set message = 'Outstanding! 🎉' %}
+        {% elif percentage >= 80 %}
+            {% set result_class = 'good' %}
+            {% set message = 'Well Done! 👏' %}
+        {% elif percentage >= 70 %}
+            {% set result_class = 'average' %}
+            {% set message = 'Good Job! 👍' %}
+        {% else %}
+            {% set result_class = 'poor' %}
+            {% set message = 'Keep Practicing! 💪' %}
+        {% endif %}
+
+        <div class="result-card {{ result_class }}">
+            <div class="score-display {{ result_class }}">
+                {{ score }} / {{ total }}
+            </div>
+            <div class="percentage">
+                {{ percentage }}%
+            </div>
+            <div class="result-message {{ result_class }}">
+                {{ message }}
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Correct Answers</div>
+                <div class="stat-value">{{ score }}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Total Questions</div>
+                <div class="stat-value">{{ total }}</div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="{{ url_for('quiz') }}" class="btn btn-primary">Retake Quiz</a>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+
+        <div class="footer">
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

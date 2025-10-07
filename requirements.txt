@@ -1,6 +1,7 @@
-Flask
-Flask-PyMongo
-flask-login
-python-dotenv
-werkzeug
-bson
+Flask==2.3.2
+Flask-PyMongo==2.3.0
+flask-login==0.6.3
+python-dotenv==1.0.0
+werkzeug==2.3.7
+pymongo==4.4.0
+gunicorn==21.2.0

@@ -1,10 +1,64 @@
-# Digital Classroom Quiz App - Azure Deployment Guide
+# 🎓 Digital Classroom Quiz App
+
+![Digital Classroom Quiz App Banner](docs/images/banner.png)
 
 ## 🚀 Overview
 
-This is a Flask-based Digital Classroom Quiz application that allows teachers to upload questions and students to take quizzes with instant scoring. The application is designed to be deployed on Azure App Service.
+A modern, Flask-based Digital Classroom Quiz application that empowers educators to seamlessly upload questions and enables students to take quizzes with instant scoring and feedback. 
 
-## 📋 Prerequisites
+## ✨ Features
+
+- **Teacher Dashboard**: Easily create, manage, and upload quiz questions.
+- **Student Portal**: Intuitive interface for students to take quizzes.
+- **Instant Scoring**: Automated grading and immediate feedback upon quiz completion.
+- **Secure Authentication**: Built-in login/signup for secure access.
+- **Cloud-Ready**: Optimized for seamless deployment on Azure App Service.
+
+## 📸 Screenshots
+
+*(Screenshots are loaded from the `Images/` directory)*
+
+| Login Page | Teacher Dashboard | Student Quiz View |
+| :---: | :---: | :---: |
+| ![Login Page](Images/login%20page.png) | ![Teacher Dashboard](Images/upload%20questions.png) | ![Student View](Images/Quiz%20page.png) |
+
+## 💻 Local Development Setup
+
+### 1. Prerequisites
+- Python 3.9+
+- MongoDB (Local or Atlas)
+- Git
+
+### 2. Clone the Repository
+```bash
+git clone https://github.com/yourusername/digital-classroom-quiz.git
+cd digital-classroom-quiz
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Environment Variables
+Create a `.env` file in the root directory:
+```env
+MONGO_URI=mongodb://localhost:27017/quizdb
+SECRET_KEY=your-secret-key-change-this
+FLASK_ENV=development
+```
+
+### 5. Run the Application
+```bash
+python app.py
+```
+The application will be available at `http://127.0.0.1:5000/`.
+
+---
+
+## ☁️ Azure Deployment Guide
+
+### Prerequisites for Azure
 
 Before deploying to Azure, ensure you have:
 
